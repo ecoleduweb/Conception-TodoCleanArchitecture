@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "11VFypLjmdglAMWn6HMLiGnbficyWt70fidKc7qDJmXb0Gc/Qm93GVOgLb+wirk6fyixKE1mn7KoZIkJIXMwfw==",
+  "success": true,
+  "projectFilePath": "D:\\OneDrive - Cégep de Rivière-du-Loup\\rdl\\_Conception\\CleanArchitecture\\CleanTodo\\CleanTodo.Application\\CleanTodo.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\antoi\\.nuget\\packages\\fluentvalidation\\11.10.0\\fluentvalidation.11.10.0.nupkg.sha512",
+    "C:\\Users\\antoi\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.10.0\\fluentvalidation.dependencyinjectionextensions.11.10.0.nupkg.sha512",
+    "C:\\Users\\antoi\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.1\\microsoft.extensions.dependencyinjection.8.0.1.nupkg.sha512",
+    "C:\\Users\\antoi\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
