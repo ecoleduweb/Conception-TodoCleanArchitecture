@@ -1,4 +1,4 @@
-﻿using CleanTodo.Domain.Interfaces;
+﻿using CleanTodo.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

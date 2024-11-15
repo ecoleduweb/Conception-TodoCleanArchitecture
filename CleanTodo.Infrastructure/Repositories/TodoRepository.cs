@@ -1,5 +1,5 @@
 ﻿using CleanTodo.Application.Entities;
-using CleanTodo.Domain.Interfaces;
+using CleanTodo.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

@@ -1,7 +1,9 @@
 ﻿using CleanTodo.Application.DTOS;
-using CleanTodo.Application.Entities;
-using CleanTodo.Application.Service.Todo;
-using CleanTodo.Domain.Interfaces;
+using CleanTodo.Application.Exceptions;
+using CleanTodo.Domain.Interfaces.Repositories;
+
+namespace CleanTodo.Application.Service.Todo;
+
 
 public class TodoService : ITodoService
 {
@@ -12,15 +14,14 @@ public class TodoService : ITodoService
         _todoRepository = todoRepository;
     }
 
-    public async Task<TodoDto> Create(CreateTodoDto createTodoDto)
+    public async Task<TodoDto> FindById(Guid id)
     {
-        var todo = new Todo(
-            createTodoDto.Title
-        );
-
-        var savedTodo = await _todoRepository.Add(todo);
-
-        return new TodoDto(savedTodo);
+        var todo = await _todoRepository.FindById(id);
+        if (todo == null)
+        {
+            throw new NotFoundException();
+        }
+        return new TodoDto(todo);
     }
 
     public async Task Delete(Guid id)

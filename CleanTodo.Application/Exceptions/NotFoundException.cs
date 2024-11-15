@@ -1,7 +1,6 @@
-﻿namespace CleanTodo.Application.Exceptions
-{
-    public class NotFoundException : Exception
-    {
+﻿namespace CleanTodo.Application.Exceptions;
 
-    }
+public class NotFoundException : Exception
+{
+
 }

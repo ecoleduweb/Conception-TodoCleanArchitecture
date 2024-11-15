@@ -9,3 +9,4 @@ D:\OneDrive - Cégep de Rivière-du-Loup\rdl\_Conception\CleanArchitecture\Clean
 D:\OneDrive - Cégep de Rivière-du-Loup\rdl\_Conception\CleanArchitecture\CleanTodo\CleanTodo.Domain\obj\Debug\net8.0\refint\CleanTodo.Domain.dll
 D:\OneDrive - Cégep de Rivière-du-Loup\rdl\_Conception\CleanArchitecture\CleanTodo\CleanTodo.Domain\obj\Debug\net8.0\CleanTodo.Domain.pdb
 D:\OneDrive - Cégep de Rivière-du-Loup\rdl\_Conception\CleanArchitecture\CleanTodo\CleanTodo.Domain\obj\Debug\net8.0\ref\CleanTodo.Domain.dll
+D:\OneDrive - Cégep de Rivière-du-Loup\rdl\_Conception\CleanArchitecture\CleanTodo\CleanTodo.Domain\obj\Debug\net8.0\CleanTodo.Domain.sourcelink.json
