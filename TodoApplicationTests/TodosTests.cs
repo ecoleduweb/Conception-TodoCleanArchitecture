@@ -41,7 +41,7 @@ public class TodosTests
     public async Task CreateTodo_ShouldReturnCreatedTodo()
     {
         // Arrange
-        var createTodoDto = new CreateTodoDto { Title = "Test Todo" };
+        CreateTodoDto createTodoDto = new CreateTodoDto { Title = "Test Todo" };
         // Act
         var result = await _createTodoUseCase.Execute(createTodoDto);
 

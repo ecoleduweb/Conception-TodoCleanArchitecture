@@ -4,6 +4,7 @@ using FluentValidation;
 namespace CleanTodo.Application.Validators;
 
 // Valide automatiquement CreateTodoDto quand il est créé dans le controller
+// Validator ci-dessous
 public class CreateTodoValidation : AbstractValidator<CreateTodoDto>
 {
     public CreateTodoValidation()
@@ -11,5 +12,6 @@ public class CreateTodoValidation : AbstractValidator<CreateTodoDto>
         RuleFor(x => x.Title)
             .NotEmpty()
             .MaximumLength(200);
+
     }
 }
