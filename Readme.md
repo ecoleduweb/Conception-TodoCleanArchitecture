@@ -6,7 +6,7 @@
 1. Faire la commmande ci-dessous
 
 ```
-dotnet ef migrations update --startup-project ..\CleanTodo.WebAPI --project ./
+dotnet ef database update --startup-project ..\CleanTodo.WebAPI --project ./
 ```
 
 # Pour comprendre le fonctionnement
@@ -87,4 +87,5 @@ Est-ce que ton utilisateur a un mot de passe encrypté dans la base de données?
 **R** :
 
 **Q** : Va voir sur internet comment on s'authentifie avec une application en .net core. Est-ce que tout ce que tu as fait est représentatif de l'industrie?
+
 **R** : 
