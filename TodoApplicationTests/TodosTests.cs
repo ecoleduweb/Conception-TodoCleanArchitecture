@@ -3,7 +3,9 @@ using CleanTodo.Application.Entities;
 using CleanTodo.Application.Exceptions;
 using CleanTodo.Application.Service.Todo;
 using CleanTodo.Application.UseCase;
+using CleanTodo.Application.Validators;
 using CleanTodo.Domain.Interfaces.Repositories;
+using FluentValidation;
 using Moq;
 
 namespace TodoApplicationTests;
@@ -15,6 +17,7 @@ public class TodosTests
     private DeleteTodoUseCase _deleteTodoUseCase;
     private GetAllTodosUseCase _getAllTodosUseCase;
     private ToggleTodoCompleteStatusUseCase _toggleTodoCompleteStatusUseCase;
+    private IValidator<CreateTodoDto> _createTodoValidator;
     Todo todo1 = new Todo { Id = Guid.NewGuid(), Text = "Test Todo 1" };
     Todo todo2 = new Todo { Id = Guid.NewGuid(), Text = "Test Todo 2" };
 
@@ -22,9 +25,10 @@ public class TodosTests
     [SetUp]
     public void Setup()
     {
+        _createTodoValidator = new CreateTodoValidation();
         _todoRepositoryMock = new Mock<ITodoRepository>();
         var todoService = new TodoService(_todoRepositoryMock.Object);
-        _createTodoUseCase = new CreateTodoUseCase(_todoRepositoryMock.Object);
+        _createTodoUseCase = new CreateTodoUseCase(_todoRepositoryMock.Object, _createTodoValidator);
         _deleteTodoUseCase = new DeleteTodoUseCase(_todoRepositoryMock.Object, todoService);
         _getAllTodosUseCase = new GetAllTodosUseCase(_todoRepositoryMock.Object);
         _toggleTodoCompleteStatusUseCase = new ToggleTodoCompleteStatusUseCase(_todoRepositoryMock.Object, todoService);
