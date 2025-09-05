@@ -1,4 +1,4 @@
-﻿using CleanTodo.Application.DTOS;
+﻿using CleanTodo.Domain.DTOS;
 using CleanTodo.Domain.Interfaces.Repositories;
 
 namespace CleanTodo.Application.UseCase;

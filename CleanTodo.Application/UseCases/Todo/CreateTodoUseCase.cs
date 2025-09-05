@@ -1,10 +1,12 @@
 ﻿using CleanTodo.Application.DTOS;
-using CleanTodo.Application.Entities;
+using CleanTodo.Application.UseCase;
+using CleanTodo.Domain.DTOS;
+using CleanTodo.Domain.Entities;
 using CleanTodo.Domain.Interfaces.Repositories;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace CleanTodo.Application.UseCase;
+namespace CleanTodo.Domain.UseCase;
 
 public class CreateTodoUseCase : ICreateTodoUseCase
 {

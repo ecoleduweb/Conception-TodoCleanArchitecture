@@ -1,6 +1,7 @@
-﻿using CleanTodo.Application.DTOS;
-using CleanTodo.Application.Exceptions;
+﻿using CleanTodo.Application.Exceptions;
+using CleanTodo.Domain.DTOS;
 using CleanTodo.Domain.Interfaces.Repositories;
+using CleanTodo.Domain.Service.Todo;
 
 namespace CleanTodo.Application.Service.Todo;
 

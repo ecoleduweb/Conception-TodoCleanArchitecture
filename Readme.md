@@ -1,6 +1,6 @@
 ﻿# Pour instancier la bd, exécuter dans
 
-1. Installer ef core https://learn.microsoft.com/en-us/ef/core/get-started/overview/install 
+1. Installer ef core https://learn.microsoft.com/en-us/ef/core/get-started/overview/install#get-the-net-cli-tools
 2. Faire un build de la solution.
 3. Ouvrir une fenêtre console dans visual studio en cliquant droit sur le projet CleanTodo.Infrastructure + terminal
 4. Faire la commmande ci-dessous

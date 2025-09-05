@@ -1,4 +1,4 @@
-﻿using CleanTodo.Application.Entities;
+﻿using CleanTodo.Domain.Entities;
 
 namespace CleanTodo.Domain.Interfaces.Repositories;
 

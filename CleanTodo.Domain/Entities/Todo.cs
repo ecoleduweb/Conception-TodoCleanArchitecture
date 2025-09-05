@@ -1,4 +1,4 @@
-﻿namespace CleanTodo.Application.Entities;
+﻿namespace CleanTodo.Domain.Entities;
 
 public class Todo
 {

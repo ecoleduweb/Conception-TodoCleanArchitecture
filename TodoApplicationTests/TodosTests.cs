@@ -1,10 +1,11 @@
 using CleanTodo.Application.DTOS;
-using CleanTodo.Application.Entities;
 using CleanTodo.Application.Exceptions;
 using CleanTodo.Application.Service.Todo;
 using CleanTodo.Application.UseCase;
 using CleanTodo.Application.Validators;
+using CleanTodo.Domain.Entities;
 using CleanTodo.Domain.Interfaces.Repositories;
+using CleanTodo.Domain.UseCase;
 using FluentValidation;
 using Moq;
 

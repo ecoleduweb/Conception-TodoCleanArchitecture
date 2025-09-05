@@ -1,4 +1,4 @@
-﻿using CleanTodo.Application.Entities;
+﻿using CleanTodo.Domain.Entities;
 using CleanTodo.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

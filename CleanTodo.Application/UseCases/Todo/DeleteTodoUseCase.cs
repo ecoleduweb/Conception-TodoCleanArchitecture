@@ -1,5 +1,5 @@
-﻿using CleanTodo.Application.Service.Todo;
-using CleanTodo.Domain.Interfaces.Repositories;
+﻿using CleanTodo.Domain.Interfaces.Repositories;
+using CleanTodo.Domain.Service.Todo;
 
 namespace CleanTodo.Application.UseCase;
 

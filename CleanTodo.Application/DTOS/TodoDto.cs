@@ -1,6 +1,6 @@
-﻿using CleanTodo.Application.Entities;
+﻿using CleanTodo.Domain.Entities;
 
-namespace CleanTodo.Application.DTOS;
+namespace CleanTodo.Domain.DTOS;
 
 public class TodoDto
 {

@@ -1,6 +1,6 @@
-﻿using CleanTodo.Application.DTOS;
+﻿using CleanTodo.Domain.DTOS;
 
-namespace CleanTodo.Application.Service.Todo;
+namespace CleanTodo.Domain.Service.Todo;
 
 public interface ITodoService
 {

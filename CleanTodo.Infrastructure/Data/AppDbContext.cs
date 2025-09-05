@@ -1,4 +1,4 @@
-﻿using CleanTodo.Application.Entities;
+﻿using CleanTodo.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext

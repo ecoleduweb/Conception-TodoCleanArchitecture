@@ -1,5 +1,7 @@
 ﻿using CleanTodo.Application.Service.Todo;
 using CleanTodo.Application.UseCase;
+using CleanTodo.Domain.Service.Todo;
+using CleanTodo.Domain.UseCase;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;

@@ -1,6 +1,7 @@
 using CleanTodo.Application.DTOS;
 using CleanTodo.Application.Exceptions;
 using CleanTodo.Application.UseCase;
+using CleanTodo.Domain.DTOS;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
