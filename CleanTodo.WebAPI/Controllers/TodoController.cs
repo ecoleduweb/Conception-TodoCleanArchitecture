@@ -1,27 +1,19 @@
-using CleanTodo.Application.DTOS;
 using CleanTodo.Application.UseCase;
 using CleanTodo.Domain.DTOS;
 using CleanTodo.Domain.Exceptions;
-using CleanTodo.Domain.UseCase;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TodoController : ControllerBase
 {
-    private CreateTodoUseCase _createUseCase;
-    private DeleteTodoUseCase _deleteUseCase;
     private GetAllTodosUseCase _getAllUseCase;
     private GetTodoUseCase _getTodoUseCase;
-    private ToggleTodoCompleteStatusUseCase _toggleCompleteStatusUseCase;
 
-    public TodoController(CreateTodoUseCase createTodoUseCase, DeleteTodoUseCase deleteUseCase, GetAllTodosUseCase getAllUseCase, ToggleTodoCompleteStatusUseCase toggleCompleteStatusUseCase, GetTodoUseCase getTodoUseCase)
+    public TodoController(GetAllTodosUseCase getAllUseCase, GetTodoUseCase getTodoUseCase)
     {
-        _createUseCase = createTodoUseCase;
-        _deleteUseCase = deleteUseCase;
         _getAllUseCase = getAllUseCase;
         _getTodoUseCase = getTodoUseCase;
-        _toggleCompleteStatusUseCase = toggleCompleteStatusUseCase;
     }
 
     [HttpGet]
@@ -31,18 +23,20 @@ public class TodoController : ControllerBase
         return Ok(todos);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<TodoDto>> Create([FromBody] CreateTodoDto createTodoDto)
-    {
-        TodoDto todo = await _createUseCase.Execute(createTodoDto);
+    //Cadeau! pour le create. On utilise un CreatedAtAction qui retourne un code http 201 et un header location avec l'url du nouvel élément créé.
+    //
+    //[HttpPost]
+    //public async Task<ActionResult<TodoDto>> Create([FromBody] CreateTodoDto createTodoDto)
+    //{
+    //    TodoDto todo = await _createUseCase.Execute(createTodoDto);
 
-        return CreatedAtAction(
-            nameof(Create),
-            new { id = todo.Id },
-            todo);
-    }
+    //    return CreatedAtAction(
+    //        nameof(Get),
+    //        new { id = todo.Id },
+    //        todo);
+    //}
 
-    [HttpGet("{id}")] // /api/todo/ton_long_id
+    [HttpGet("{id}")] // /api/todo/ton_id
     public async Task<IActionResult> Get(Guid id)
     {
         try
@@ -56,31 +50,6 @@ public class TodoController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id)
-    {
-        try
-        {
-            await _toggleCompleteStatusUseCase.Execute(id);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
-    {
-        try
-        {
-            await _deleteUseCase.Execute(id);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
-    }
+    // Pour le delete et le update, tu peux retourn un noContent (http 204) qui dit :"Ça fonctionné, je n'ai rien à te retourner"
+    //return NoContent();
 }

@@ -11,6 +11,7 @@ public class CreateTodoValidation : AbstractValidator<CreateTodoDto>
     {
         RuleFor(x => x.Title)
             .NotEmpty()
+            .MinimumLength(3)
             .MaximumLength(200);
 
     }

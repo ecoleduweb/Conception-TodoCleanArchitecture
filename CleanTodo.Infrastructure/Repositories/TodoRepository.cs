@@ -19,24 +19,9 @@ public class TodoRepository : ITodoRepository
 
     public async Task<Todo> Add(Todo todo)
     {
-        EntityEntry<Todo> newTodo = await _context.Todos.AddAsync(todo);
-        await _context.SaveChangesAsync();
-        return newTodo.Entity;
-    }
-
-    public async Task ToggleCompleteStatus(Guid id)
-    {
-        Todo todo = await FindById(id);
-        todo.IsCompleted = !todo.IsCompleted;
-        _context.Todos.Update(todo);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task Delete(Guid id)
-    {
-        Todo todo = await FindById(id);
-        _context.Todos.Remove(todo);
-        await _context.SaveChangesAsync();
+        EntityEntry<Todo> newTodo = await _context.Todos.AddAsync(todo); // appelle la méthode AddAsync
+        await _context.SaveChangesAsync(); // sauvegarde les changements dans la base de données
+        return newTodo.Entity; // retourne l'entité ajoutée.
     }
 
     public async Task<Todo?> FindById(Guid id)
