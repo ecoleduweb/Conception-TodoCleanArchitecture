@@ -1,23 +1,26 @@
-﻿using CleanTodo.Domain.Interfaces.Repositories;
-using CleanTodo.Domain.Service.Todo;
+﻿using CleanTodo.Domain.Entities;
+using CleanTodo.Domain.Exceptions;
+using CleanTodo.Domain.Interfaces.Repositories;
 
 namespace CleanTodo.Application.UseCase;
 
-public class ToggleTodoCompleteStatusUseCase : IToggleTodoCompleteStatusUseCase
+public class ToggleTodoCompleteStatusUseCase
 {
 
     private readonly ITodoRepository _todoRepository;
-    private readonly ITodoService _todoService;
 
-    public ToggleTodoCompleteStatusUseCase(ITodoRepository todoRepository, ITodoService todoService)
+    public ToggleTodoCompleteStatusUseCase(ITodoRepository todoRepository)
     {
         _todoRepository = todoRepository;
-        _todoService = todoService;
     }
 
     public async Task Execute(Guid id)
     {
-        await _todoService.FindById(id);
+        Todo? todo = await _todoRepository.FindById(id);
+        if (todo == null)
+        {
+            throw new NotFoundException(id);
+        }
         await _todoRepository.ToggleCompleteStatus(id);
     }
 }

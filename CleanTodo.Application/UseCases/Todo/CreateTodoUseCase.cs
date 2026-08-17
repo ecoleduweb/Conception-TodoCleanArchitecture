@@ -1,5 +1,4 @@
 ﻿using CleanTodo.Application.DTOS;
-using CleanTodo.Application.UseCase;
 using CleanTodo.Domain.DTOS;
 using CleanTodo.Domain.Entities;
 using CleanTodo.Domain.Interfaces.Repositories;
@@ -8,7 +7,7 @@ using FluentValidation.Results;
 
 namespace CleanTodo.Domain.UseCase;
 
-public class CreateTodoUseCase : ICreateTodoUseCase
+public class CreateTodoUseCase
 {
     private readonly ITodoRepository _todoRepository;
     private readonly IValidator<CreateTodoDto> _validator;

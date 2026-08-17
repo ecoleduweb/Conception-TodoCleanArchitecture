@@ -39,10 +39,10 @@ public class TodoRepository : ITodoRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Todo> FindById(Guid id)
+    public async Task<Todo?> FindById(Guid id)
     {
         return await _context.Todos
             .Where(x => x.Id == id)
-            .SingleAsync();
+            .SingleOrDefaultAsync();
     }
 }

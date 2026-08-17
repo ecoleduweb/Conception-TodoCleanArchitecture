@@ -1,9 +1,8 @@
 using CleanTodo.Application.DTOS;
-using CleanTodo.Application.Exceptions;
-using CleanTodo.Application.Service.Todo;
 using CleanTodo.Application.UseCase;
 using CleanTodo.Application.Validators;
 using CleanTodo.Domain.Entities;
+using CleanTodo.Domain.Exceptions;
 using CleanTodo.Domain.Interfaces.Repositories;
 using CleanTodo.Domain.UseCase;
 using FluentValidation;
@@ -15,6 +14,7 @@ public class TodosTests
 {
     private Mock<ITodoRepository> _todoRepositoryMock;
     private CreateTodoUseCase _createTodoUseCase;
+    private GetTodoUseCase _getTodoUseCase;
     private DeleteTodoUseCase _deleteTodoUseCase;
     private GetAllTodosUseCase _getAllTodosUseCase;
     private ToggleTodoCompleteStatusUseCase _toggleTodoCompleteStatusUseCase;
@@ -28,11 +28,11 @@ public class TodosTests
     {
         _createTodoValidator = new CreateTodoValidation();
         _todoRepositoryMock = new Mock<ITodoRepository>();
-        var todoService = new TodoService(_todoRepositoryMock.Object);
         _createTodoUseCase = new CreateTodoUseCase(_todoRepositoryMock.Object, _createTodoValidator);
-        _deleteTodoUseCase = new DeleteTodoUseCase(_todoRepositoryMock.Object, todoService);
+        _getTodoUseCase = new GetTodoUseCase(_todoRepositoryMock.Object);
+        _deleteTodoUseCase = new DeleteTodoUseCase(_todoRepositoryMock.Object);
         _getAllTodosUseCase = new GetAllTodosUseCase(_todoRepositoryMock.Object);
-        _toggleTodoCompleteStatusUseCase = new ToggleTodoCompleteStatusUseCase(_todoRepositoryMock.Object, todoService);
+        _toggleTodoCompleteStatusUseCase = new ToggleTodoCompleteStatusUseCase(_todoRepositoryMock.Object);
 
         // Arrange
         _todoRepositoryMock.Setup(repo => repo.Add(It.IsAny<Todo>())).ReturnsAsync(todo1);
@@ -49,6 +49,19 @@ public class TodosTests
         CreateTodoDto createTodoDto = new CreateTodoDto { Title = "Test Todo" };
         // Act
         var result = await _createTodoUseCase.Execute(createTodoDto);
+
+        // Assert
+        Assert.That(todo1.Id == result.Id, "Todo is returned");
+        Assert.That(todo1.Text == result.Title, "Same text");
+    }
+
+    [Test]
+    public async Task GetTodo_ShouldReturnTodo()
+    {
+        // Arrange
+        CreateTodoDto createTodoDto = new CreateTodoDto { Title = "Test Todo" };
+        // Act
+        var result = await _getTodoUseCase.Execute(todo1.Id);
 
         // Assert
         Assert.That(todo1.Id == result.Id, "Todo is returned");

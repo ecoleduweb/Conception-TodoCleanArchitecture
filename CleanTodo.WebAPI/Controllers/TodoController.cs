@@ -1,23 +1,26 @@
 using CleanTodo.Application.DTOS;
-using CleanTodo.Application.Exceptions;
 using CleanTodo.Application.UseCase;
 using CleanTodo.Domain.DTOS;
+using CleanTodo.Domain.Exceptions;
+using CleanTodo.Domain.UseCase;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TodoController : ControllerBase
 {
-    private ICreateTodoUseCase _createUseCase;
-    private IDeleteTodoUseCase _deleteUseCase;
-    private IGetAllTodosUseCase _getAllUseCase;
-    private IToggleTodoCompleteStatusUseCase _toggleCompleteStatusUseCase;
+    private CreateTodoUseCase _createUseCase;
+    private DeleteTodoUseCase _deleteUseCase;
+    private GetAllTodosUseCase _getAllUseCase;
+    private GetTodoUseCase _getTodoUseCase;
+    private ToggleTodoCompleteStatusUseCase _toggleCompleteStatusUseCase;
 
-    public TodoController(ICreateTodoUseCase todoCreateUseCase, IDeleteTodoUseCase deleteUseCase, IGetAllTodosUseCase getAllUseCase, IToggleTodoCompleteStatusUseCase toggleCompleteStatusUseCase)
+    public TodoController(CreateTodoUseCase createTodoUseCase, DeleteTodoUseCase deleteUseCase, GetAllTodosUseCase getAllUseCase, ToggleTodoCompleteStatusUseCase toggleCompleteStatusUseCase, GetTodoUseCase getTodoUseCase)
     {
-        _createUseCase = todoCreateUseCase;
+        _createUseCase = createTodoUseCase;
         _deleteUseCase = deleteUseCase;
         _getAllUseCase = getAllUseCase;
+        _getTodoUseCase = getTodoUseCase;
         _toggleCompleteStatusUseCase = toggleCompleteStatusUseCase;
     }
 
@@ -31,12 +34,26 @@ public class TodoController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TodoDto>> Create([FromBody] CreateTodoDto createTodoDto)
     {
-        var todo = await _createUseCase.Execute(createTodoDto);
+        TodoDto todo = await _createUseCase.Execute(createTodoDto);
 
         return CreatedAtAction(
             nameof(Create),
             new { id = todo.Id },
             todo);
+    }
+
+    [HttpGet("{id}")] // /api/todo/ton_long_id
+    public async Task<IActionResult> Get(Guid id)
+    {
+        try
+        {
+            TodoDto todo = await _getTodoUseCase.Execute(id);
+            return Ok(todo);
+        }
+        catch (NotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpPut("{id}")]

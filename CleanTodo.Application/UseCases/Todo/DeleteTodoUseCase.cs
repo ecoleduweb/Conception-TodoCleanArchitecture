@@ -1,22 +1,25 @@
-﻿using CleanTodo.Domain.Interfaces.Repositories;
-using CleanTodo.Domain.Service.Todo;
+﻿using CleanTodo.Domain.Entities;
+using CleanTodo.Domain.Exceptions;
+using CleanTodo.Domain.Interfaces.Repositories;
 
 namespace CleanTodo.Application.UseCase;
 
-public class DeleteTodoUseCase : IDeleteTodoUseCase
+public class DeleteTodoUseCase
 {
     private readonly ITodoRepository _todoRepository;
-    private readonly ITodoService _todoService;
 
-    public DeleteTodoUseCase(ITodoRepository todoRepository, ITodoService todoService)
+    public DeleteTodoUseCase(ITodoRepository todoRepository)
     {
         _todoRepository = todoRepository;
-        _todoService = todoService;
     }
 
     public async Task Execute(Guid id)
     {
-        await _todoService.FindById(id);
+        Todo? todo = await _todoRepository.FindById(id);
+        if (todo == null)
+        {
+            throw new NotFoundException(id);
+        }
         await _todoRepository.Delete(id);
     }
 }

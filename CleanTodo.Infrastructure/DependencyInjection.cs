@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanTodo.Infrastructure;
+
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
@@ -11,10 +12,13 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         // Register DbContext
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+            options.UseMySql(
+                connectionString,
+                ServerVersion.AutoDetect(connectionString),
+                b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
+        ));
 
         // Register Repositories
         services.AddScoped<ITodoRepository, TodoRepository>();

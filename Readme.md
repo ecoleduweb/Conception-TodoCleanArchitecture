@@ -1,102 +1,51 @@
-﻿# Pour instancier la bd, exécuter dans
+﻿# Assures-toi d'avoir le client ef core.
 
-1. Installer ef core https://learn.microsoft.com/en-us/ef/core/get-started/overview/install#get-the-net-cli-tools
-2. Faire un build de la solution.
-3. Ouvrir une fenêtre console dans visual studio en cliquant droit sur le projet CleanTodo.Infrastructure + terminal
-4. Faire la commmande ci-dessous
+1. Avoir installé le client ef core https://learn.microsoft.com/en-us/ef/core/get-started/overview/install#get-the-net-cli-tools
+1. Posser une instance de mariadb sur ta machine avec l'utilisateur root:root
+1. MariaDB possède une table nommée PWATodos (IA niveau 3)
+1. Faire un build de la solution.
+1. Ouvrir une fenêtre console dans visual studio en cliquant droit sur le projet CleanTodo.Infrastructure + terminal
+1. Faire la commmande ci-dessous
 
 ```
 dotnet ef database update --startup-project ..\CleanTodo.WebAPI --project ./
 ```
 
-# Pour comprendre le fonctionnement
+Ce que ça fait? Ça applique les migrations dans le dossier migrations.
 
-1. Individuellement, crée un diagramme de séquence sur lucid chart qui représente le chemin parcouru par un appel lorsqu'on ajoute un TODO.
+**Q:** : Va voir le fichier InitialCreate. Qu'est-ce qu'il fait, que fait Up? Que fait Down?
+**R** :
+
+Si tu vas voir dans mariadb, tu vas remarquer que deux tables sont crées à partir de notre modèle.
+
+# Le fonctionnement de l'application. 
+
+1. Individuellement, crée un diagramme de séquence (papier ou sur sur lucid chart) qui représente le chemin parcouru par un appel lorsqu'on appel la route GetAll d'un Todo.
 2. Une fois que c'est fait, compare ton travail à un collègue.
 
-# Pour comprendre l'architecture
+# Pour revenir sur l'architecture
 
-1. Individuellement, va lire cet article : https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
-2. Une fois que c'est fait, dans tes propres mots, décrit ce que fait : 
+Afin de bien comprendre le fonctionnement de l'architecture, bases-toi sur le fonctionnement du FindById et crée la route pour ajouter, modifier et ajouter un todo.
 
-- La couche application
-- La couche domaine
-- La couche infrastrucutre
-- La couche WebAPI
+Une fois que c'est fait, tu peux recharger le projet tests et valider si ton application fonctionne adéquatement.
 
-Tu peux t'aider de l'IA pour valider ta compréhension. Pose des questions du style :"J'ai dit que la couche application dans la clean architecture permettait de faire ça pis ça. Est-ce que c'est vrai?"
+Voici ce que tu auras à faire pour l'ajout.
 
-# Pour valider ta compréhension
+1. Ajouter le DTO `CreateTodoDto` avec la propriété nécessaires pour créer un todoo
+2. Ajouter une méthode dans l'interface du Repository qui permet d'ajouter un todo de type Todo.
+3. Implémenter cette nouvelle méthode dans le repo de la couche infrastructure. Utilise _context.Todos pour trouver comment ajouter (addjouter) un nouvel élément de façon asynchrone. N'oublie pas de retourner le todo créé.
 
-1. En équipe de deux, ajoute le nécessaire pour valider si un utilisateur qui appelle la route /login peut se connecter en validant son nom d'utilisateur ("root") et son mot de passe ("root") **UNIQUEMENT** dans le controleur.
+Attention, le retour sera une entitée. Si tu veux retourner la valeur, tu dois faire `return createdTodo.Entity`. De plus, avec EfCore, on doit sauvegarder les changements avec la ligne ` _context.SaveChangesAsync();`
 
-**Q:** : Disons qu'on met le mot de passe dans un fichier de configuration, quels sont les problèmes ici?
-**R** :
+4. Ajouter un useCase dans le dossier Todo de la couche Application.
+5. Valide que le contenu du todo fait au moins trois caractères. Si jamais il n'est pas valide, retourne une nouvelle exception qui se nomme InvalidFormatException. Si le todo est valide, sauvegarde le avec le repo et retoune ce dernier.
 
-2. Ajoute le nécessaire pour que l'utilistateur soit dans la base de données en suivant les étapes ci-dessous. 
+Attention, le useCase reçoit un CreateTodoDTO en paramètre et retourne un TodoDto. De plus, le repo reçoit un Todo en paramètre. C'est donc au useCase de transformer le Todo en ses différentes formes.
 
-Ajoute l'entité utilisateur
+Voici la signature de la méthode pour t'aider : `public async Task<TodoDto> Execute(CreateTodoDto createTodoDto)`
 
-**Q** : De quels champs aura-t-il besoin?
+6. Ajoute le useCase dans le dossier DependencyInjection du projet Application. Ça permet de passer le UseCase dans le constructeur et d'y injecter le repo automatiquement.
+7. Ajoute le useCase dans le controlleur et test le tout via le swagger.
 
-**R** :
 
-**Q** : Est-ce que l'autocomplete de l'IA a toujours raison?
-
-**R** : 
-
-Ajoute une migration pour que la table users soit créée avec la commande suivante :
-`dotnet ef migrations add XXXXXXXXXXXXX_LE_NOM_DE_TA_MIGRATION_XXXXXXXXXXXXXXXX --startup-project ..\CleanTodo.WebAPI --project ./`
-
-Dans le fichier de migration qui a été créé, ajoute un utilisateur dans la base de données en te basant sur le code ci-dessous.
-
-```C#
-migrationBuilder.InsertData(
-    table: "Todos",
-    columns: new[] { "Id", "Text", "IsCompleted", "Date" },
-    values: new object[] { Guid.NewGuid(), "Learn Clean Architecture", false, DateTime.UtcNow }
-);
-```
-
-**Q** : Dans quelle méthode ira l'utilisateur? Up ou Down?
-
-**R** : 
- 
-
-Tu dois en ensuite appliquer la migration à ta BD avec la commande `dotnet ef migrations update --startup-project ..\CleanTodo.WebAPI --project ./` que tu as déjà fait plus haut.
-
-1. Ajoute le modèle du domaine de ton user en te basant sur les todos.
-2. Crée un useCase de Login. La logique du login sera dans ce use case.
-3. On valide quoi dans le nom et le mot de passe? Crée un validator.
-4. Ajoute un test pour ton useCase.
-5. Test ton login avec le swagger.
-
-Good! Le login fonctionne!
-
-# Faire fonctionner le login, mais mieux
-
-1. Est-ce que ton application est sécuritaire? Est-elle protégée? Non? Complète le login pour créer un token jwt.
-
-**Q** : C'est quoi un token JWT? Ça sert à quoi? C'est quoi un access_token?
-
-**R** : 
-
-2. Suite à un login fonctionnel, retourne un token dans les cookies.
-
-# Valider qu'on est connecté
-
-1. Ajoute du code dans ton application qui permet de valider si l'utilisateur crée, modifie ou supprime un todo lorsqu'il est connecté. Tu dois valider que l'accessToken dans le cookie est valide. Pas besoin de valider qu'il existe dans la BD.
-2. Avec l'IA, demande comment tu pourrais produire un middleware pour centraliser la logique de ton code.
-
-# Dernière chose
-Est-ce que ton utilisateur a un mot de passe encrypté dans la base de données? Si la réponse est non, ajoute une route `/register` qui permet de créer un compte et qui sauvegarde le mot de passe encrypté.
-
-# Dernière dernière chose.
-
-**Q** : Dans tes mots, comment fonctionne l'authentification sur un site web?
-
-**R** :
-
-**Q** : Va voir sur internet comment on s'authentifie avec une application en .net core. Est-ce que tout ce que tu as fait est représentatif de l'industrie?
-
-**R** : 
+Le premier ajout devrait te prendre une heure tout au plus. Les suivants seront plus rapides et simple à faire.

@@ -1,23 +1,22 @@
-﻿using CleanTodo.Application.Service.Todo;
-using CleanTodo.Application.UseCase;
-using CleanTodo.Domain.Service.Todo;
+﻿using CleanTodo.Application.UseCase;
 using CleanTodo.Domain.UseCase;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace CleanTodo.Application;
+
 public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         // cette ligne ajoute les validators
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddScoped<ITodoService, TodoService>();
-        services.AddScoped<ICreateTodoUseCase, CreateTodoUseCase>();
-        services.AddScoped<IDeleteTodoUseCase, DeleteTodoUseCase>();
-        services.AddScoped<IGetAllTodosUseCase, GetAllTodosUseCase>();
-        services.AddScoped<IToggleTodoCompleteStatusUseCase, ToggleTodoCompleteStatusUseCase>();
+        services.AddScoped<CreateTodoUseCase>();
+        services.AddScoped<DeleteTodoUseCase>();
+        services.AddScoped<GetTodoUseCase>();
+        services.AddScoped<GetAllTodosUseCase>();
+        services.AddScoped<ToggleTodoCompleteStatusUseCase>();
 
         return services;
     }
