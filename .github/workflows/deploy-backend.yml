@@ -1,0 +1,60 @@
+name: Deploy Backend to VPS
+
+
+on:
+  push:
+    branches: [student]
+    paths:
+      - "CleanTodo.WebAPI/**"
+      - "CleanTodo.Application/**"
+      - "CleanTodo.Domain/**"
+      - "CleanTodo.Infrastructure/**"
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "10.0.x"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish in Release mode
+        run: dotnet publish CleanTodo.WebAPI/CleanTodo.API.csproj -c Release -o ./publish
+
+      - name: Stop back-end
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            systemctl stop cleantodo || true
+
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "publish/*"
+          target: "/var/www/cleantodo"
+          strip_components: 1
+          overwrite: true
+
+      - name: Start back-end service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            systemctl start cleantodo
+            systemctl status cleantodo
