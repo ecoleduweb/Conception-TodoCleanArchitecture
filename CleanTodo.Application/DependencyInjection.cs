@@ -1,4 +1,7 @@
 ﻿using CleanTodo.Application.UseCase;
+using CleanTodo.Application.UseCases;
+using CleanTodo.Application.UseCases.User;
+using CleanTodo.Infrastructure.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -11,11 +14,25 @@ public static class DependencyInjection
     {
         // cette ligne ajoute les validators
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddScoped<CreateTodoUseCase>();
-        services.AddScoped<DeleteTodoUseCase>();
+       services.AddScoped<CreateUserUseCase>();
+      // services.AddScoped<DeleteTodoUseCase>();
         services.AddScoped<GetTodoUseCase>();
-        services.AddScoped<GetAllTodosUseCase>();
-        services.AddScoped<ToggleTodoCompleteStatusUseCase>();
+        services.AddScoped<GetAllUsersUseCase>();
+        // services.AddScoped<ToggleTodoCompleteStatusUseCase>();
+        services.AddScoped<LoginUseCase>();
+        services.AddScoped<RegisterUseCase>();
+        services.AddScoped<JwtService>();
+        services.AddScoped<DeleteTodoUseCase>();
+        services.AddScoped<GetAllShipsUseCase>();
+        services.AddScoped<GetShipUseCase>();
+        services.AddScoped<CreateShipUseCase>();
+        services.AddScoped<DeleteShipUseCase>();
+        services.AddScoped<UpdateShipUseCase>();
+        services.AddScoped<DockShipUseCase>();
+        services.AddScoped<GetPortsUseCase>();
+        services.AddScoped<SendShipUseCase>();
+
+
 
         return services;
     }
